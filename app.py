@@ -261,7 +261,7 @@ if st.session_state.hint_used:
     ).add_to(m)
 
 # Obsługa kliknięcia
-map_data = st_folium(m, width=1000, height=600, returned_objects=["last_clicked"])
+map_data = st_folium(m, width=1000, height=700, returned_objects=["last_clicked"])
 
 if map_data["last_clicked"]:
     click_lat = map_data["last_clicked"]["lat"]

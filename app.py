@@ -5,7 +5,8 @@ from streamlit_folium import st_folium
 import random
 from geopy.distance import geodesic  # do liczenia odległości między punktami
 
-st.title("Quiz geograficzny 🌍")
+st.markdown("<h1 style='margin-top:0px'>Quiz geograficzny 🌍</h1>", unsafe_allow_html=True)
+
 st.set_page_config(layout="wide", initial_sidebar_state="auto")
 
 # Słownik obiektów (przykład, możesz wstawić całą swoją listę)

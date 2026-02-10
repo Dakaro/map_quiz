@@ -241,7 +241,7 @@ st.write(f"Znajdź na mapie: *{st.session_state.current_object}*")
 
 # Tworzymy mapę
 m = folium.Map(
-    location=[20, 0],
+    location=[0, 0],
     zoom_start=2,
     tiles="CartoDB Positron",  # minimalne podpisy
     dragging=False,             # blokuje przesuwanie mapy

@@ -211,7 +211,7 @@ objects = {
 
 
 # Parametr, ile km od prawidłowego miejsca uznajemy za poprawny klik
-ACCEPTABLE_DISTANCE_KM = 200  
+ACCEPTABLE_DISTANCE_KM = 350  
 
 # Inicjalizacja sesji
 if "current_object" not in st.session_state:
@@ -240,8 +240,13 @@ if st.session_state.current_object is None:
 st.write(f"Znajdź na mapie: *{st.session_state.current_object}*")
 
 # Tworzymy mapę
-m = folium.Map(location=[20, 0], zoom_start=2)
-
+m = folium.Map(
+    location=[20, 0],
+    zoom_start=2,
+    tiles="CartoDB Positron",  # minimalne podpisy
+    dragging=False,             # blokuje przesuwanie mapy
+    scrollWheelZoom=False       # blokuje scroll myszką)
+    )
 # Wyświetlamy już odkryte obiekty
 for name, coords in st.session_state.found_objects.items():
     folium.Marker(location=coords, popup=f"{name} ✅").add_to(m)

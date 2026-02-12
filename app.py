@@ -220,6 +220,8 @@ if "score" not in st.session_state:
     st.session_state.score = 0
 if "found_objects" not in st.session_state:
     st.session_state.found_objects = {}
+if "last_object" not in st.session_state:
+    st.session_state.last_object = None
 
 st.session_state.hint_used = False
 
@@ -228,6 +230,7 @@ if st.button("Podpowiedź"):
     st.session_state.hint_used = True
 
 if st.button("Następny"):
+    st.session_state.last_object = None
     st.session_state.score += 1
     st.session_state.current_object = None
 
@@ -260,6 +263,9 @@ if st.session_state.hint_used:
         icon=folium.Icon(color="orange", icon="info-sign")
     ).add_to(m)
 
+if st.session_state.last_object is not None:
+    folium.Marker(location=st.session_state.last_object).add_to(m)
+
 # Obsługa kliknięcia
 map_data = st_folium(m, width=1000, height=600, returned_objects=["last_clicked"])
 
@@ -268,7 +274,7 @@ if map_data["last_clicked"]:
     click_lon = map_data["last_clicked"]["lng"]
     correct_coords = objects[st.session_state.current_object]
     distance = geodesic((click_lat, click_lon), correct_coords).km
-
+    st.session_state.last_object = correct_coords
     if distance <= ACCEPTABLE_DISTANCE_KM:
         st.success(f"Poprawnie! {st.session_state.current_object} znajduje się tutaj ✅")
         st.session_state.found_objects[st.session_state.current_object] = correct_coords
@@ -276,7 +282,6 @@ if map_data["last_clicked"]:
 
     else:
         st.error(f"Niepoprawnie! Spróbuj ponownie. Twój błąd: {int(distance)} km")
-        folium.Marker(location=correct_coords).add_to(m)
         st.session_state.score += 1
         st.session_state.found_objects[st.session_state.current_object] = correct_coords
 

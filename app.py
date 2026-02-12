@@ -274,10 +274,13 @@ if map_data["last_clicked"]:
         st.session_state.found_objects[st.session_state.current_object] = correct_coords
         st.session_state.score += 1
         st.session_state.current_object = None  # przygotowanie do następnego obiektu
+
     else:
         st.error(f"Niepoprawnie! Spróbuj ponownie. Twój błąd: {int(distance)} km")
         folium.Marker(location=correct_coords).add_to(m)
         st.session_state.score += 1
+        st.session_state.found_objects[st.session_state.current_object] = correct_coords
+        st.session_state.current_object = None  # przygotowanie do następnego obiektu
 
 
 st.write(f"Twój wynik: {st.session_state.score} / {len(objects)}")

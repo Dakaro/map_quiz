@@ -247,9 +247,6 @@ m = folium.Map(
     dragging=False,             # blokuje przesuwanie mapy
     scrollWheelZoom=False       # blokuje scroll myszką)
     )
-# Wyświetlamy już odkryte obiekty
-for name, coords in st.session_state.found_objects.items():
-    folium.Marker(location=coords, popup=f"{name} ✅").add_to(m)
 
 # Wyświetlamy podpowiedź, jeśli użyto przycisku
 if st.session_state.hint_used:
@@ -261,7 +258,7 @@ if st.session_state.hint_used:
     ).add_to(m)
 
 # Obsługa kliknięcia
-map_data = st_folium(m, width=1000, height=700, returned_objects=["last_clicked"])
+map_data = st_folium(m, width=1000, height=600, returned_objects=["last_clicked"])
 
 if map_data["last_clicked"]:
     click_lat = map_data["last_clicked"]["lat"]
@@ -276,5 +273,9 @@ if map_data["last_clicked"]:
         st.session_state.current_object = None  # przygotowanie do następnego obiektu
     else:
         st.error(f"Niepoprawnie! Spróbuj ponownie. Twój błąd: {int(distance)} km")
+        folium.Marker(location=correct_coords).add_to(m)
+        st.session_state.current_object = None
+        st.session_state.score += 1
+
 
 st.write(f"Twój wynik: {st.session_state.score} / {len(objects)}")
